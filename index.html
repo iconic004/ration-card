@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<title>Ration Card Generator</title>
+
+<style>
+body{
+  font-family: Mangal, Arial, sans-serif;
+  background:#f2f2f2;
+}
+
+.container{
+  width:800px;
+  margin:auto;
+  background:white;
+  padding:20px;
+}
+
+h2,h3{
+  text-align:center;
+  margin:5px 0;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+
+table, th, td{
+  border:1px solid #000;
+}
+
+th,td{
+  padding:5px;
+  text-align:center;
+}
+
+.form-section{
+  margin-bottom:20px;
+}
+
+input,select{
+  width:100%;
+  padding:5px;
+  margin:5px 0;
+}
+
+button{
+  padding:8px 15px;
+  margin-top:10px;
+  cursor:pointer;
+}
+
+#card{
+  display:none;
+}
+
+.logo{
+  text-align:center;
+}
+
+.logo img{
+  height:80px;
+}
+
+@media print{
+  body{ background:white; }
+  .form-section, button{ display:none; }
+  .container{ box-shadow:none; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- ================= FORM ================= -->
+<div class="form-section">
+<h3>Ration Card Form</h3>
+
+<label>Ration Card No</label>
+<input id="rcno">
+
+<label>Card Holder Name</label>
+<input id="holder">
+
+<label>Father / Husband Name</label>
+<input id="fhname">
+
+<label>District</label>
+<input id="district" value="कोडरमा">
+
+<label>Ward / Village</label>
+<input id="ward">
+
+<label>FPS Dealer Name</label>
+<input id="dealer">
+
+<h4>Family Members</h4>
+<input id="mname" placeholder="नाम">
+<select id="mgender">
+  <option>पु०</option>
+  <option>म०</option>
+</select>
+<input id="mage" placeholder="उम्र">
+<input id="mrel" placeholder="संबंध">
+<button onclick="addMember()">Add Member</button>
+
+<br><br>
+<button onclick="generate()">Generate Ration Card</button>
+</div>
+
+<!-- ================= CARD ================= -->
+<div id="card">
+
+<div class="logo">
+  <!-- LOGO IMAGE YAHAN CHANGE KARNA -->
+  <img src="logo.png">
+</div>
+
+<h3>राशन कार्ड</h3>
+<h4>खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</h4>
+
+<p><b>Ration Card No:</b> <span id="o_rcno"></span></p>
+<p><b>कार्डधारी का नाम:</b> <span id="o_holder"></span></p>
+<p><b>पिता / पति का नाम:</b> <span id="o_fhname"></span></p>
+<p><b>जिला:</b> <span id="o_district"></span></p>
+<p><b>वार्ड / ग्राम:</b> <span id="o_ward"></span></p>
+
+<table>
+<tr>
+<th>क्र०</th>
+<th>नाम</th>
+<th>लिंग</th>
+<th>उम्र</th>
+<th>संबंध</th>
+</tr>
+<tbody id="outMembers"></tbody>
+</table>
+
+<p><b>कुल सदस्य:</b> <span id="total"></span></p>
+<p><b>वितरक का नाम:</b> <span id="o_dealer"></span></p>
+
+<hr>
+
+<h4>कार्डधारियों के लिए आवश्यक सूचनाएँ</h4>
+<p style="font-size:12px">
+यह राशन कार्ड निःशुल्क है। कार्डधारी इसे सुरक्षित रखे।
+राशन वितरण में किसी भी प्रकार की शिकायत होने पर हेल्पलाइन नंबर
+1967 या 1800 212 5512 पर संपर्क करें।
+</p>
+
+<button onclick="window.print()">Print / Save PDF</button>
+
+</div>
+</div>
+
+<script>
+let members=[];
+function addMember(){
+  members.push({
+    name:mname.value,
+    gender:mgender.value,
+    age:mage.value,
+    rel:mrel.value
+  });
+  alert("Member Added");
+  mname.value=""; mage.value=""; mrel.value="";
+}
+
+function generate(){
+  o_rcno.innerText=rcno.value;
+  o_holder.innerText=holder.value;
+  o_fhname.innerText=fhname.value;
+  o_district.innerText=district.value;
+  o_ward.innerText=ward.value;
+  o_dealer.innerText=dealer.value;
+
+  let html="";
+  members.forEach((m,i)=>{
+    html+=`<tr>
+    <td>${i+1}</td>
+    <td>${m.name}</td>
+    <td>${m.gender}</td>
+    <td>${m.age}</td>
+    <td>${m.rel}</td>
+    </tr>`;
+  });
+
+  outMembers.innerHTML=html;
+  total.innerText=members.length;
+
+  card.style.display="block";
+}
+</script>
+
+</body>
+</html>
