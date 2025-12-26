@@ -5,195 +5,193 @@
 <title>Ration Card Generator</title>
 
 <style>
+@page {
+  size: A4;
+  margin: 20mm;
+}
+
 body{
-  font-family: Mangal, Arial, sans-serif;
-  background:#f2f2f2;
+  font-family: Mangal, "Noto Serif Devanagari", Arial, sans-serif;
+  color:#000;
 }
 
-.container{
-  width:800px;
-  margin:auto;
-  background:white;
-  padding:20px;
+.page{
+  width:100%;
+  min-height: 1000px;
+  page-break-after: always;
+  box-sizing: border-box;
 }
 
-h2,h3{
-  text-align:center;
-  margin:5px 0;
+.border{
+  border:2px solid #000;
+  padding:15px;
+  height:100%;
 }
+
+.flex{
+  display:flex;
+}
+
+.col{
+  width:50%;
+  padding:10px;
+  box-sizing:border-box;
+}
+
+.center{text-align:center;}
+.right{text-align:right;}
+.bold{font-weight:bold;}
 
 table{
   width:100%;
   border-collapse:collapse;
   font-size:14px;
 }
-
-table, th, td{
-  border:1px solid #000;
-}
-
 th,td{
-  padding:5px;
+  border:1px solid #000;
+  padding:4px;
   text-align:center;
-}
-
-.form-section{
-  margin-bottom:20px;
-}
-
-input,select{
-  width:100%;
-  padding:5px;
-  margin:5px 0;
-}
-
-button{
-  padding:8px 15px;
-  margin-top:10px;
-  cursor:pointer;
-}
-
-#card{
-  display:none;
 }
 
 .logo{
-  text-align:center;
+  width:120px;
+  margin:10px auto;
 }
 
-.logo img{
-  height:80px;
-}
+.small{font-size:12px;}
+.xsmall{font-size:11px;}
 
 @media print{
-  body{ background:white; }
-  .form-section, button{ display:none; }
-  .container{ box-shadow:none; }
+  button, .form{display:none;}
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
 <!-- ================= FORM ================= -->
-<div class="form-section">
+<div class="form">
 <h3>Ration Card Form</h3>
+Ration Card No <input id="rc"><br><br>
+Card Holder Name <input id="holder"><br><br>
+Father / Husband Name <input id="fh"><br><br>
+District <input id="dist"><br><br>
+Ward / Address <input id="addr"><br><br>
+Dealer Name <input id="dealer"><br><br>
 
-<label>Ration Card No</label>
-<input id="rcno">
-
-<label>Card Holder Name</label>
-<input id="holder">
-
-<label>Father / Husband Name</label>
-<input id="fhname">
-
-<label>District</label>
-<input id="district" value="कोडरमा">
-
-<label>Ward / Village</label>
-<input id="ward">
-
-<label>FPS Dealer Name</label>
-<input id="dealer">
-
-<h4>Family Members</h4>
-<input id="mname" placeholder="नाम">
-<select id="mgender">
-  <option>पु०</option>
-  <option>म०</option>
-</select>
-<input id="mage" placeholder="उम्र">
-<input id="mrel" placeholder="संबंध">
-<button onclick="addMember()">Add Member</button>
-
+<h4>Family Member</h4>
+Name <input id="mname">
+Gender <input id="mgender" placeholder="पु० / म०">
+Age <input id="mage">
+Relation <input id="mrel">
+<button onclick="add()">Add</button>
 <br><br>
-<button onclick="generate()">Generate Ration Card</button>
+<button onclick="generate()">Generate</button>
 </div>
 
-<!-- ================= CARD ================= -->
-<div id="card">
+<!-- ================= PAGE 1 ================= -->
+<div class="page">
+<div class="border flex">
 
-<div class="logo">
-  <!-- LOGO IMAGE YAHAN CHANGE KARNA -->
-  <img src="logo.png">
-</div>
-
-<h3>राशन कार्ड</h3>
-<h4>खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</h4>
-
-<p><b>Ration Card No:</b> <span id="o_rcno"></span></p>
-<p><b>कार्डधारी का नाम:</b> <span id="o_holder"></span></p>
-<p><b>पिता / पति का नाम:</b> <span id="o_fhname"></span></p>
-<p><b>जिला:</b> <span id="o_district"></span></p>
-<p><b>वार्ड / ग्राम:</b> <span id="o_ward"></span></p>
-
+<div class="col">
+<h4 class="center">परिवारिक सूची</h4>
 <table>
 <tr>
-<th>क्र०</th>
-<th>नाम</th>
-<th>लिंग</th>
-<th>उम्र</th>
-<th>संबंध</th>
+<th>क्र०</th><th>नाम</th><th>लिंग</th><th>उम्र</th><th>संबंध</th>
 </tr>
-<tbody id="outMembers"></tbody>
+<tbody id="tbl"></tbody>
 </table>
 
-<p><b>कुल सदस्य:</b> <span id="total"></span></p>
-<p><b>वितरक का नाम:</b> <span id="o_dealer"></span></p>
+<p class="bold">कुल सदस्य: <span id="total"></span></p>
+<p>कार्डधारी हस्ताक्षर:</p>
+<br><br>
+<p class="small center">Help Line No: 18003456598<br>
+IT SUPPORT BY NIC</p>
+</div>
 
-<hr>
+<div class="col center">
+<img src="logo.png" class="logo">
+<h3>राशन कार्ड</h3>
+<p class="bold">खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</p>
+<p>झारखण्ड राज्य खाद्य सुरक्षा योजना</p>
+<p class="bold">जिला – <span id="odist"></span></p>
+<p class="bold">Ration Card No: <span id="orc"></span></p>
+<p>कार्डधारी का नाम:<br><span class="bold" id="oholder"></span></p>
+</div>
 
-<h4>कार्डधारियों के लिए आवश्यक सूचनाएँ</h4>
-<p style="font-size:12px">
-यह राशन कार्ड निःशुल्क है। कार्डधारी इसे सुरक्षित रखे।
-राशन वितरण में किसी भी प्रकार की शिकायत होने पर हेल्पलाइन नंबर
-1967 या 1800 212 5512 पर संपर्क करें।
-</p>
+</div>
+</div>
+
+<!-- ================= PAGE 2 ================= -->
+<div class="page">
+<div class="border">
+<p class="bold">Ration Card No: <span id="orc2"></span></p>
+<p>1. Card Holder Name – <span id="oholder2"></span></p>
+<p>2. कार्डधारी का नाम – <span id="oholder3"></span></p>
+<p>3. पिता / पति का नाम – <span id="ofh"></span></p>
+<p>4. आवासीय पता – <span id="oaddr"></span></p>
+<p>जिला – <span id="odist2"></span></p>
+<p>5. वितरक का नाम – <span id="odealer"></span></p>
+
+<br><br>
+<p class="right">प्राधिकृत अधिकारी का हस्ताक्षर / मुहर</p>
+</div>
+</div>
+
+<!-- ================= PAGE 3 ================= -->
+<div class="page">
+<div class="border xsmall">
+<h4 class="center">कार्डधारियों के लिए आवश्यक सूचनाएँ</h4>
+<p>1. यह राशन कार्ड कार्डधारी को निःशुल्क दिया गया है।</p>
+<p>2. कार्ड को सुरक्षित रखना कार्डधारी की जिम्मेदारी है।</p>
+<p>3. राशन प्राप्त करते समय मात्रा अंकित कराना आवश्यक है।</p>
+<p>4. किसी भी माह का राशन अगले माह में प्राप्त किया जा सकता है।</p>
+<p>5. शिकायत संबंधित अधिकारी को दी जा सकती है।</p>
+</div>
+</div>
+
+<!-- ================= PAGE 4 ================= -->
+<div class="page">
+<div class="border xsmall">
+<p>6. कार्ड खोने पर नियमानुसार नया कार्ड प्राप्त किया जा सकता है।</p>
+<p>7. निवास स्थान बदलने पर सूचना देना आवश्यक है।</p>
+<p>8. अधिक जानकारी के लिए https://aahar.jharkhand.gov.in देखें।</p>
+<p>9. टोल फ्री हेल्पलाइन: 1967, 1800 212 5512</p>
+</div>
+</div>
 
 <button onclick="window.print()">Print / Save PDF</button>
 
-</div>
-</div>
-
 <script>
 let members=[];
-function addMember(){
+function add(){
   members.push({
-    name:mname.value,
-    gender:mgender.value,
-    age:mage.value,
-    rel:mrel.value
+    n:mname.value,
+    g:mgender.value,
+    a:mage.value,
+    r:mrel.value
   });
   alert("Member Added");
-  mname.value=""; mage.value=""; mrel.value="";
 }
 
 function generate(){
-  o_rcno.innerText=rcno.value;
-  o_holder.innerText=holder.value;
-  o_fhname.innerText=fhname.value;
-  o_district.innerText=district.value;
-  o_ward.innerText=ward.value;
-  o_dealer.innerText=dealer.value;
-
-  let html="";
+  let h="";
   members.forEach((m,i)=>{
-    html+=`<tr>
-    <td>${i+1}</td>
-    <td>${m.name}</td>
-    <td>${m.gender}</td>
-    <td>${m.age}</td>
-    <td>${m.rel}</td>
-    </tr>`;
+    h+=`<tr><td>${i+1}</td><td>${m.n}</td><td>${m.g}</td><td>${m.a}</td><td>${m.r}</td></tr>`;
   });
-
-  outMembers.innerHTML=html;
+  tbl.innerHTML=h;
   total.innerText=members.length;
 
-  card.style.display="block";
+  orc.innerText=rc.value;
+  orc2.innerText=rc.value;
+  oholder.innerText=holder.value;
+  oholder2.innerText=holder.value;
+  oholder3.innerText=holder.value;
+  ofh.innerText=fh.value;
+  oaddr.innerText=addr.value;
+  odist.innerText=dist.value;
+  odist2.innerText=dist.value;
+  odealer.innerText=dealer.value;
 }
 </script>
 
