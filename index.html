@@ -104,16 +104,43 @@ Relation <input id="mrel">
 </div>
 
 <!-- PAGE 2 (FRONT) -->
-<div class="card center">
-<img src="logo.png" style="width:70px;"><br>
-<b>राशन कार्ड</b><br>
-<span class="small">खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</span>
-<p><b>RC No:</b> <span id="orc"></span></p>
-<p><b>नाम:</b> <span id="oholder"></span></p>
-<p><b>जिला:</b> <span id="odist"></span></p>
-<div class="barcode">|| ||| || ||| | ||| ||</div>
-</div>
+<div class="card front-page">
 
+  <div class="inner">
+
+    <h1>राशन कार्ड</h1>
+
+    <h2>खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</h2>
+
+    <!-- LOGO -->
+    <img src="logo.png" class="state-logo" alt="Jharkhand Logo">
+
+    <div class="scheme">
+      झारखण्ड राज्य खाद्य सुरक्षा योजना
+    </div>
+
+    <div class="district">
+      जिला – <span id="district"></span>
+    </div>
+
+    <div class="box">
+      Ration Card No./राशन कार्ड संख्या-
+      <span id="rationNo"></span>
+    </div>
+
+    <div class="name">
+      कार्डधारी का नाम : <span id="holderName"></span>
+    </div>
+
+    <!-- FAKE BARCODE -->
+    <div class="barcode">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+  </div>
+</div>
 <!-- PAGE 3 -->
 <div class="card xsmall">
 <p><b>1.</b> Card Holder: <span id="oholder2"></span></p>
