@@ -2,47 +2,37 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>Ration Card Booklet</title>
+<title>Ration Card</title>
 
 <style>
+/* ===== PAGE SIZE EXACT A4 ===== */
+@page{
+  size: A4;
+  margin: 15mm;
+}
+
 body{
   font-family: Mangal, "Noto Serif Devanagari", Arial, sans-serif;
-  margin:0;
+  color:#000;
 }
 
-/* ===== PRINT SETTINGS ===== */
-@page{
-  size:A4;
-  margin:10mm;
-}
-
-@media print{
-  .form, button{display:none;}
-}
-
-/* ===== BOOKLET LAYOUT ===== */
 .page{
   width:210mm;
   height:297mm;
-  page-break-after:always;
-}
-
-.spread{
-  display:flex;
-  width:100%;
-  height:100%;
-}
-
-.half{
-  width:50%;
-  padding:12mm;
+  page-break-after: always;
   box-sizing:border-box;
+}
+
+.border{
   border:2px solid #000;
+  padding:10mm;
+  height:100%;
 }
 
 .center{text-align:center;}
 .right{text-align:right;}
 .small{font-size:12px;}
+.xsmall{font-size:11px;}
 
 table{
   width:100%;
@@ -55,12 +45,8 @@ th,td{
   text-align:center;
 }
 
-/* fake barcode */
-.barcode{
-  font-family: monospace;
-  font-size:20px;
-  letter-spacing:3px;
-  margin-top:15px;
+@media print{
+  .form, button{display:none;}
 }
 </style>
 </head>
@@ -68,7 +54,7 @@ th,td{
 <body>
 
 <!-- ================= FORM ================= -->
-<div class="form" style="padding:20px;">
+<div class="form">
 <h3>Ration Card Form</h3>
 Ration Card No <input id="rc"><br><br>
 Card Holder Name <input id="holder"><br><br>
@@ -87,59 +73,96 @@ Relation <input id="mrel">
 <button onclick="generate()">Generate</button>
 </div>
 
-<!-- ================= OUTER COVER (PAGE 4 + PAGE 1) ================= -->
+<!-- ================= PAGE 1 ================= -->
 <div class="page">
-  <div class="spread">
+<div class="border">
 
-    <!-- BACK COVER -->
-    <div class="half small">
-      <h4>कार्डधारियों के लिए आवश्यक सूचनाएँ</h4>
-      <p>1. यह राशन कार्ड निःशुल्क है।</p>
-      <p>2. कार्ड सुरक्षित रखना कार्डधारी की जिम्मेदारी है।</p>
-      <p>3. राशन प्राप्त करते समय मात्रा अंकित कराएँ।</p>
-      <p>4. हेल्पलाइन: 1967, 1800 212 5512</p>
-    </div>
+<table>
+<tr>
+<th>क्र०</th><th>नाम</th><th>लिंग</th><th>उम्र</th><th>संबंध</th>
+</tr>
+<tbody id="tbl"></tbody>
+</table>
 
-    <!-- FRONT COVER -->
-    <div class="half center">
-      <img src="logo.png" style="width:120px;"><br>
-      <h2>राशन कार्ड</h2>
-      <p>खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</p>
-      <p><b>Ration Card No:</b> <span id="orc"></span></p>
-      <p><b>कार्डधारी:</b> <span id="oholder"></span></p>
-      <div class="barcode">|| ||| || ||| | ||| || ||| | |||</div>
-    </div>
+<p><b>कुल व्यक्तियों की संख्या :</b> <span id="total"></span></p>
+<p><b>कार्डधारी हस्ताक्षर :</b></p>
 
-  </div>
+<br>
+
+<p class="center small">
+Help Line No: 18003456598<br>
+IT SUPPORT BY NATIONAL INFORMATIC CENTRE (NIC)
+</p>
+
+</div>
 </div>
 
-<!-- ================= INNER PAGES (PAGE 2 + PAGE 3) ================= -->
+<!-- ================= PAGE 2 ================= -->
 <div class="page">
-  <div class="spread">
+<div class="border center">
 
-    <!-- PAGE 2 -->
-    <div class="half">
-      <h3 class="center">परिवारिक सूची</h3>
-      <table>
-        <tr>
-          <th>क्र०</th><th>नाम</th><th>लिंग</th><th>उम्र</th><th>संबंध</th>
-        </tr>
-        <tbody id="tbl"></tbody>
-      </table>
-      <p><b>कुल सदस्य:</b> <span id="total"></span></p>
-    </div>
+<img src="logo.png" style="width:130px;"><br><br>
 
-    <!-- PAGE 3 -->
-    <div class="half">
-      <p><b>पिता / पति:</b> <span id="ofh"></span></p>
-      <p><b>पता:</b> <span id="oaddr"></span></p>
-      <p><b>जिला:</b> <span id="odist"></span></p>
-      <p><b>वितरक:</b> <span id="odealer"></span></p>
-      <br><br>
-      <p class="right">प्राधिकृत अधिकारी हस्ताक्षर</p>
-    </div>
+<h2>राशन कार्ड</h2>
+<p class="bold">खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</p>
 
-  </div>
+<p><b>Ration Card No:</b> <span id="orc"></span></p>
+<p><b>कार्डधारी का नाम :</b> <span id="oholder"></span></p>
+
+<p>झारखण्ड राज्य खाद्य सुरक्षा योजना</p>
+<p><b>जिला –</b> <span id="odist"></span></p>
+
+<br>
+<div style="font-family:monospace;letter-spacing:3px;">
+|| ||| || ||| | ||| || ||| | |||
+</div>
+
+</div>
+</div>
+
+<!-- ================= PAGE 3 ================= -->
+<div class="page">
+<div class="border">
+
+<p><b>1. Card Holder Name :</b> <span id="oholder2"></span></p>
+<p><b>2. कार्डधारी का नाम :</b> <span id="oholder3"></span></p>
+
+<p class="xsmall">
+(गृहस्थी का मुखिया 18 वर्ष या उससे अधिक की महिला होगी…)
+</p>
+
+<p><b>3. पिता / पति का नाम :</b> <span id="ofh"></span></p>
+
+<p><b>4. आवासीय पता :</b><br>
+<span id="oaddr"></span><br>
+<b>जिला :</b> <span id="odist2"></span>
+</p>
+
+<p><b>5. वितरक का नाम :</b> <span id="odealer"></span></p>
+
+<br><br>
+<p class="right">प्राधिकृत अधिकारी का हस्ताक्षर / मुहर</p>
+
+</div>
+</div>
+
+<!-- ================= PAGE 4 ================= -->
+<div class="page">
+<div class="border xsmall">
+
+<h4 class="center">कार्डधारियों के लिए आवश्यक सूचनाएँ</h4>
+
+<p>1. यह राशन कार्ड निःशुल्क है।</p>
+<p>2. कार्ड को सुरक्षित रखना कार्डधारी की जिम्मेदारी है।</p>
+<p>3. माह का राशन अगले माह में भी प्राप्त किया जा सकता है।</p>
+<p>4. शिकायत संबंधित अधिकारी को दी जा सकती है।</p>
+<p>5. कार्ड खोने पर नया कार्ड नियमानुसार मिलेगा।</p>
+<p>6. निवास स्थान बदलने पर सूचना देना आवश्यक है।</p>
+<p>7. अन्य स्थान जाने पर कार्ड जमा करना होगा।</p>
+<p>8. अधिक जानकारी: https://aahar.jharkhand.gov.in</p>
+<p>9. हेल्पलाइन: 1967, 1800 212 5512</p>
+
+</div>
 </div>
 
 <button onclick="window.print()">Print / Save PDF</button>
@@ -153,28 +176,26 @@ function add(){
     a:mage.value,
     r:mrel.value
   });
-  alert("Member Added");
 }
 
 function generate(){
   let h="";
   members.forEach((m,i)=>{
     h+=`<tr>
-      <td>${i+1}</td>
-      <td>${m.n}</td>
-      <td>${m.g}</td>
-      <td>${m.a}</td>
-      <td>${m.r}</td>
-    </tr>`;
+    <td>${i+1}</td><td>${m.n}</td><td>${m.g}</td>
+    <td>${m.a}</td><td>${m.r}</td></tr>`;
   });
   tbl.innerHTML=h;
   total.innerText=members.length;
 
   orc.innerText=rc.value;
   oholder.innerText=holder.value;
+  oholder2.innerText=holder.value;
+  oholder3.innerText=holder.value;
   ofh.innerText=fh.value;
   oaddr.innerText=addr.value;
   odist.innerText=dist.value;
+  odist2.innerText=dist.value;
   odealer.innerText=dealer.value;
 }
 </script>
