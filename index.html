@@ -2,263 +2,192 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>Ration Card – 4 in 1</title>
+<title>Ration Card 4 in 1</title>
 
 <style>
 @page{
-  size: A4;
-  margin: 8mm;
+  size:A4;
+  margin:8mm;
 }
 
 body{
   margin:0;
-  font-family: Mangal, "Noto Serif Devanagari", Arial, sans-serif;
+  font-family:Mangal,"Noto Serif Devanagari",Arial,sans-serif;
 }
 
-/* hide form in print */
-@media print{
-  .form, button{
-    display:none !important;
-  }
-}
-
-/* A4 container */
+/* ===== A4 ONE PAGE – 4 PARTS ===== */
 .sheet{
-  width:210mm;
-  height:297mm;
+  width:100%;
+  height:100%;
   display:grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap:6mm;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:8mm;
 }
 
-/* each mini page */
-.card{
-  border:2px solid #000;
-  padding:6mm;
+.panel{
+  border:3px solid #000;
+  padding:10mm;
   box-sizing:border-box;
-  font-size:11px;
 }
 
-/* helpers */
+/* ===== COMMON ===== */
 .center{text-align:center;}
-.right{text-align:right;}
-.small{font-size:10px;}
-.xsmall{font-size:9px;}
+.bold{font-weight:bold;}
+.small{font-size:13px;}
 
+.bar{
+  border:2px solid #000;
+  padding:6px 10px;
+  display:inline-block;
+  margin:10px 0;
+}
+
+/* ===== LOGO ===== */
+.logo{
+  width:220px;
+  margin:12px auto;
+  display:block;
+}
+
+/* ===== BARCODE ===== */
+.barcode{
+  display:flex;
+  justify-content:center;
+  margin-top:14px;
+}
+.barcode span{
+  width:3px;
+  height:55px;
+  background:#000;
+  margin:0 1px;
+}
+.barcode span:nth-child(even){
+  height:45px;
+}
+
+/* ===== TABLE ===== */
 table{
   width:100%;
   border-collapse:collapse;
+  font-size:13px;
 }
 th,td{
   border:1px solid #000;
-  padding:2px;
-  font-size:10px;
+  padding:4px;
   text-align:center;
 }
 
-.barcode{
-  font-family: monospace;
-  letter-spacing:2px;
-  font-size:12px;
-  margin-top:6px;
+/* ===== LIST ===== */
+ol{
+  font-size:14px;
+  padding-left:18px;
+}
+ol li{
+  margin-bottom:6px;
+  text-align:justify;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= FORM ================= -->
-<div class="form" style="padding:10px;">
-<h3>Ration Card Form</h3>
-Ration Card No <input id="rc"><br><br>
-Card Holder <input id="holder"><br><br>
-Father / Husband <input id="fh"><br><br>
-District <input id="dist"><br><br>
-Address <input id="addr"><br><br>
-Dealer <input id="dealer"><br><br>
-
-<h4>Family Member</h4>
-Name <input id="mname">
-Gender <input id="mgender">
-Age <input id="mage">
-Relation <input id="mrel">
-<button onclick="add()">Add</button>
-<br><br>
-<button onclick="generate()">Generate</button>
-</div>
-
-<!-- ================= A4 PAGE ================= -->
 <div class="sheet">
 
-<!-- PAGE 1 -->
-<div class="card">
+<!-- ===== PAGE 1 (FRONT LEFT) ===== -->
+<div class="panel small">
+  <b>कुल सदस्यों की संख्या :</b><br><br>
+  <b>कार्डधारी हस्ताक्षर :</b><br><br><br>
+  Help Line No : 18003456598<br>
+  IT SUPPORT BY NIC
+</div>
+
+<!-- ===== PAGE 2 (FRONT MAIN – EXACT) ===== -->
+<div class="panel center">
+
+  <h2>राशन कार्ड</h2>
+
+  <div class="bold">
+    खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग
+  </div>
+
+  <img src="logo.png" class="logo" alt="Jharkhand Logo">
+
+  <div class="bold" style="font-size:18px;">
+    झारखण्ड राज्य खाद्य सुरक्षा योजना
+  </div>
+
+  <div class="bold">
+    जिला – <span id="district">कोडरमा</span>
+  </div>
+
+  <div class="bar bold">
+    Ration Card No./राशन कार्ड संख्या-
+    <span id="ration">202801456508</span>
+  </div>
+
+  <div class="bold" style="font-size:17px;">
+    कार्डधारी का नाम : <span id="name">रिंकी देवी</span>
+  </div>
+
+  <div class="barcode">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+</div>
+
+<!-- ===== PAGE 3 (DETAILS) ===== -->
+<div class="panel small">
+
+<b>1. Card Holder Name :</b> रिंकी देवी<br><br>
+<b>2. पिता / पति का नाम :</b> —<br><br>
+<b>3. पता :</b> —<br><br>
+
+<b>4. परिवार के सदस्य :</b><br><br>
+
 <table>
 <tr>
-<th>क्र०</th><th>नाम</th><th>लिंग</th><th>उम्र</th><th>संबंध</th>
+<th>क्र.</th><th>नाम</th><th>लिंग</th><th>उम्र</th><th>संबंध</th>
 </tr>
-<tbody id="tbl"></tbody>
+<tr>
+<td>1</td><td>—</td><td>—</td><td>—</td><td>—</td>
+</tr>
 </table>
-<p><b>कुल सदस्य :</b> <span id="total"></span></p>
-<p class="small">Help Line No: 18003456598<br>NIC</p>
+
 </div>
 
-<!-- PAGE 2 (FRONT) -->
-<div class="card front-page">
+<!-- ===== PAGE 4 (IMPORTANT INSTRUCTIONS) ===== -->
+<div class="panel">
 
-  <div class="inner">
-
-    <h1>राशन कार्ड</h1>
-
-    <h2>खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</h2>
-
-    <!-- LOGO -->
-    <img src="logo.png" class="state-logo" alt="Jharkhand Logo">
-
-    <div class="scheme">
-      झारखण्ड राज्य खाद्य सुरक्षा योजना
-    </div>
-
-    <div class="district">
-      जिला – <span id="district"></span>
-    </div>
-
-    <div class="box">
-      Ration Card No./राशन कार्ड संख्या-
-      <span id="rationNo"></span>
-    </div>
-
-    <div class="name">
-      कार्डधारी का नाम : <span id="holderName"></span>
-    </div>
-
-    <!-- FAKE BARCODE -->
-    <div class="barcode">
-      <span></span><span></span><span></span><span></span><span></span>
-      <span></span><span></span><span></span><span></span><span></span>
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
-
-  </div>
-</div>
-<!-- PAGE 3 -->
-<div class="card xsmall">
-<p><b>1.</b> Card Holder: <span id="oholder2"></span></p>
-<p><b>2.</b> पिता / पति: <span id="ofh"></span></p>
-<p><b>3.</b> पता:<br><span id="oaddr"></span></p>
-<p><b>4.</b> वितरक: <span id="odealer"></span></p>
-<p class="right">अधिकारी हस्ताक्षर</p>
+<div class="center bar bold">
+कार्डधारियों के लिए आवश्यक सूचनाएँ
 </div>
 
-<!-- PAGE 4 -->
-<!-- PAGE 4 : IMPORTANT INSTRUCTIONS -->
-<div class="card" style="font-size:11px; line-height:1.5;">
+<ol>
+<li>यह राशन कार्ड कार्डधारी को निजी रूप से दिया गया है। इसे कार्डधारी के अलावा कोई और व्यवहार में नहीं ला सकता। कार्ड को सुरक्षित रखना कार्डधारी की निजी जिम्मेदारी है।</li>
 
-  <div style="border:2px solid #000; padding:6px;">
+<li>प्राधिकृत उचित मूल्य की दुकान से राशन लेने के समय कार्ड में राशन की मात्रा अवश्य अंकित करा लें। अपने कार्ड को दुकान में किसी भी हालत में नहीं छोड़ना चाहिए।</li>
 
-    <div style="border:1px solid #000; padding:6px; text-align:center; font-weight:bold; margin-bottom:6px;">
-      कार्डधारियों के लिए आवश्यक सूचनाएँ
-    </div>
+<li>किसी माह का राशन अगर उसी माह में नहीं प्राप्त किया जाये तो वह राशन अगले माह में भी मिल सकता है।</li>
 
-    <ol style="padding-left:18px; margin:0;">
-      <li>
-        यह राशन कार्ड कार्डधारी को निजी रूप से दिया गया है | इसे कार्डधारी
-        के अलावा कोई और व्यवहार में नहीं ला सकता | कार्ड को सुरक्षित रखना
-        कार्डधारी की निजी जिम्मेदारी है |
-      </li>
+<li>उचित मूल्य दुकानदार के विरुद्ध शिकायत होने पर संबंधित आपूर्ति पदाधिकारी को सूचित करें।</li>
 
-      <li>
-        प्राधिकृत उचित मूल्य की दुकान से राशन लेने के समय कार्ड में राशन
-        की मात्रा अवश्य अंकित करा लें | अपने कार्ड को दुकान में किसी भी
-        हालत में नहीं छोड़ना चाहिए |
-      </li>
+<li>यह कार्ड निःशुल्क है। खो जाने पर निर्धारित प्रक्रिया के अनुसार नया कार्ड प्राप्त किया जा सकता है।</li>
 
-      <li>
-        किसी माह का राशन अगर उसी माह में नहीं प्राप्त किया जाये तो वह
-        राशन अगले माह में भी मिल सकता है |
-      </li>
+<li>निवास स्थान बदलने पर जिला / प्रखंड आपूर्ति कार्यालय को सूचना दें।</li>
 
-      <li>
-        उचित मूल्य के दुकानदारों के विरुद्ध यदि कोई शिकायत हो तो उसकी
-        सूचना उपायुक्त / अनुमंडल पदाधिकारी / जिला आपूर्ति पदाधिकारी /
-        पणन पदाधिकारी / प्रखंड आपूर्ति पदाधिकारी / आपूर्ति निरीक्षक
-        को भेजी जा सकती है |
-      </li>
+<li>क्षेत्र बदलने पर राशन कार्ड समर्पित करना आवश्यक होगा।</li>
 
-      <li>
-        यह कार्ड निःशुल्क है | इसके खो जाने या अन्य कारणों से दूसरे कार्ड
-        की आवश्यकता पड़ने पर इसकी आपूर्ति निर्धारित राशि प्राप्त होने के
-        उपरांत, उचित जांच के बाद जिला आपूर्ति पदाधिकारी / प्रखंड आपूर्ति
-        पदाधिकारी के कार्यालय से प्राप्त की जा सकेगी |
-      </li>
+<li>अधिक जानकारी हेतु https://aahar.jharkhand.gov.in देखें।</li>
 
-      <li>
-        कार्डधारी अगर अपने निवास स्थान को बदलते हैं तो इसकी सूचना जिला
-        आपूर्ति पदाधिकारी / प्रखंड आपूर्ति पदाधिकारी / आपूर्ति निरीक्षक
-        को तुरंत दें और अपने नये निवास के वार्ड की दुकान में अपना कार्ड
-        स्थानांतरित करवा लें |
-      </li>
+<li>शिकायत हेतु टोल-फ्री नंबर 1967 एवं 1800 212 5512।</li>
+</ol>
 
-      <li>
-        जब कार्डधारी का अपने राशनिंग क्षेत्र / अपने क्षेत्र के बाहर जाना
-        निश्चित हो जाये तब इस राशन कार्ड को तुरंत आपूर्ति कार्यालय में
-        समर्पित कर एक प्रमाणपत्र ले लेना आवश्यक होगा अन्यथा अन्य स्थान
-        में नया कार्ड नहीं बन सकेगा |
-      </li>
-
-      <li>
-        राशन वितरण के सम्बन्ध में किसी भी प्रकार की अन्य जानकारी
-        विभागीय वेबसाईट  
-        <span style="color:#1a5fb4;">https://aahar.jharkhand.gov.in</span>
-        से प्राप्त की जा सकती है |
-      </li>
-
-      <li>
-        आपूर्ति संबंधित कोई भी शिकायत होने पर टोल-फ्री हेल्पलाइन नम्बर  
-        <b>1967</b> एवं <b>1800 212 5512</b> पर अपनी शिकायत दर्ज करा सकते हैं |
-      </li>
-    </ol>
-
-  </div>
 </div>
 
-<button onclick="window.print()">Print / Save PDF</button>
-
-<script>
-let members=[];
-function add(){
-  members.push({
-    n:mname.value,
-    g:mgender.value,
-    a:mage.value,
-    r:mrel.value
-  });
-  mname.value=mgender.value=mage.value=mrel.value="";
-}
-
-function generate(){
-  let h="";
-  members.forEach((m,i)=>{
-    h+=`<tr>
-      <td>${i+1}</td>
-      <td>${m.n}</td>
-      <td>${m.g}</td>
-      <td>${m.a}</td>
-      <td>${m.r}</td>
-    </tr>`;
-  });
-  tbl.innerHTML=h;
-  total.innerText=members.length;
-
-  orc.innerText=rc.value;
-  oholder.innerText=holder.value;
-  oholder2.innerText=holder.value;
-  ofh.innerText=fh.value;
-  oaddr.innerText=addr.value;
-  odist.innerText=dist.value;
-  odealer.innerText=dealer.value;
-}
-</script>
+</div>
 
 </body>
 </html>
