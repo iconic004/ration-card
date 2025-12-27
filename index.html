@@ -2,50 +2,52 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<title>Ration Card Generator</title>
+<title>Ration Card Booklet</title>
 
 <style>
-@page {
-  size: A4;
-  margin: 20mm;
-}
-
 body{
   font-family: Mangal, "Noto Serif Devanagari", Arial, sans-serif;
-  color:#000;
+  margin:0;
 }
 
+/* ===== PRINT SETTINGS ===== */
+@page{
+  size:A4;
+  margin:10mm;
+}
+
+@media print{
+  .form, button{display:none;}
+}
+
+/* ===== BOOKLET LAYOUT ===== */
 .page{
-  width:100%;
-  min-height: 1000px;
-  page-break-after: always;
-  box-sizing: border-box;
+  width:210mm;
+  height:297mm;
+  page-break-after:always;
 }
 
-.border{
-  border:2px solid #000;
-  padding:15px;
+.spread{
+  display:flex;
+  width:100%;
   height:100%;
 }
 
-.flex{
-  display:flex;
-}
-
-.col{
+.half{
   width:50%;
-  padding:10px;
+  padding:12mm;
   box-sizing:border-box;
+  border:2px solid #000;
 }
 
 .center{text-align:center;}
 .right{text-align:right;}
-.bold{font-weight:bold;}
+.small{font-size:12px;}
 
 table{
   width:100%;
   border-collapse:collapse;
-  font-size:14px;
+  font-size:13px;
 }
 th,td{
   border:1px solid #000;
@@ -53,16 +55,12 @@ th,td{
   text-align:center;
 }
 
-.logo{
-  width:120px;
-  margin:10px auto;
-}
-
-.small{font-size:12px;}
-.xsmall{font-size:11px;}
-
-@media print{
-  button, .form{display:none;}
+/* fake barcode */
+.barcode{
+  font-family: monospace;
+  font-size:20px;
+  letter-spacing:3px;
+  margin-top:15px;
 }
 </style>
 </head>
@@ -70,13 +68,13 @@ th,td{
 <body>
 
 <!-- ================= FORM ================= -->
-<div class="form">
+<div class="form" style="padding:20px;">
 <h3>Ration Card Form</h3>
 Ration Card No <input id="rc"><br><br>
 Card Holder Name <input id="holder"><br><br>
 Father / Husband Name <input id="fh"><br><br>
 District <input id="dist"><br><br>
-Ward / Address <input id="addr"><br><br>
+Address <input id="addr"><br><br>
 Dealer Name <input id="dealer"><br><br>
 
 <h4>Family Member</h4>
@@ -89,75 +87,59 @@ Relation <input id="mrel">
 <button onclick="generate()">Generate</button>
 </div>
 
-<!-- ================= PAGE 1 ================= -->
+<!-- ================= OUTER COVER (PAGE 4 + PAGE 1) ================= -->
 <div class="page">
-<div class="border flex">
+  <div class="spread">
 
-<div class="col">
-<h4 class="center">परिवारिक सूची</h4>
-<table>
-<tr>
-<th>क्र०</th><th>नाम</th><th>लिंग</th><th>उम्र</th><th>संबंध</th>
-</tr>
-<tbody id="tbl"></tbody>
-</table>
+    <!-- BACK COVER -->
+    <div class="half small">
+      <h4>कार्डधारियों के लिए आवश्यक सूचनाएँ</h4>
+      <p>1. यह राशन कार्ड निःशुल्क है।</p>
+      <p>2. कार्ड सुरक्षित रखना कार्डधारी की जिम्मेदारी है।</p>
+      <p>3. राशन प्राप्त करते समय मात्रा अंकित कराएँ।</p>
+      <p>4. हेल्पलाइन: 1967, 1800 212 5512</p>
+    </div>
 
-<p class="bold">कुल सदस्य: <span id="total"></span></p>
-<p>कार्डधारी हस्ताक्षर:</p>
-<br><br>
-<p class="small center">Help Line No: 18003456598<br>
-IT SUPPORT BY NIC</p>
+    <!-- FRONT COVER -->
+    <div class="half center">
+      <img src="logo.png" style="width:120px;"><br>
+      <h2>राशन कार्ड</h2>
+      <p>खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</p>
+      <p><b>Ration Card No:</b> <span id="orc"></span></p>
+      <p><b>कार्डधारी:</b> <span id="oholder"></span></p>
+      <div class="barcode">|| ||| || ||| | ||| || ||| | |||</div>
+    </div>
+
+  </div>
 </div>
 
-<div class="col center">
-<img src="logo.png" class="logo">
-<h3>राशन कार्ड</h3>
-<p class="bold">खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</p>
-<p>झारखण्ड राज्य खाद्य सुरक्षा योजना</p>
-<p class="bold">जिला – <span id="odist"></span></p>
-<p class="bold">Ration Card No: <span id="orc"></span></p>
-<p>कार्डधारी का नाम:<br><span class="bold" id="oholder"></span></p>
-</div>
-
-</div>
-</div>
-
-<!-- ================= PAGE 2 ================= -->
+<!-- ================= INNER PAGES (PAGE 2 + PAGE 3) ================= -->
 <div class="page">
-<div class="border">
-<p class="bold">Ration Card No: <span id="orc2"></span></p>
-<p>1. Card Holder Name – <span id="oholder2"></span></p>
-<p>2. कार्डधारी का नाम – <span id="oholder3"></span></p>
-<p>3. पिता / पति का नाम – <span id="ofh"></span></p>
-<p>4. आवासीय पता – <span id="oaddr"></span></p>
-<p>जिला – <span id="odist2"></span></p>
-<p>5. वितरक का नाम – <span id="odealer"></span></p>
+  <div class="spread">
 
-<br><br>
-<p class="right">प्राधिकृत अधिकारी का हस्ताक्षर / मुहर</p>
-</div>
-</div>
+    <!-- PAGE 2 -->
+    <div class="half">
+      <h3 class="center">परिवारिक सूची</h3>
+      <table>
+        <tr>
+          <th>क्र०</th><th>नाम</th><th>लिंग</th><th>उम्र</th><th>संबंध</th>
+        </tr>
+        <tbody id="tbl"></tbody>
+      </table>
+      <p><b>कुल सदस्य:</b> <span id="total"></span></p>
+    </div>
 
-<!-- ================= PAGE 3 ================= -->
-<div class="page">
-<div class="border xsmall">
-<h4 class="center">कार्डधारियों के लिए आवश्यक सूचनाएँ</h4>
-<p>1. यह राशन कार्ड कार्डधारी को निःशुल्क दिया गया है।</p>
-<p>2. कार्ड को सुरक्षित रखना कार्डधारी की जिम्मेदारी है।</p>
-<p>3. राशन प्राप्त करते समय मात्रा अंकित कराना आवश्यक है।</p>
-<p>4. किसी भी माह का राशन अगले माह में प्राप्त किया जा सकता है।</p>
-<p>5. शिकायत संबंधित अधिकारी को दी जा सकती है।</p>
-</div>
-</div>
+    <!-- PAGE 3 -->
+    <div class="half">
+      <p><b>पिता / पति:</b> <span id="ofh"></span></p>
+      <p><b>पता:</b> <span id="oaddr"></span></p>
+      <p><b>जिला:</b> <span id="odist"></span></p>
+      <p><b>वितरक:</b> <span id="odealer"></span></p>
+      <br><br>
+      <p class="right">प्राधिकृत अधिकारी हस्ताक्षर</p>
+    </div>
 
-<!-- ================= PAGE 4 ================= -->
-<div class="page">
-<div class="border xsmall">
-<p>6. कार्ड खोने पर नियमानुसार नया कार्ड प्राप्त किया जा सकता है।</p>
-<p>7. निवास स्थान बदलने पर सूचना देना आवश्यक है।</p>
-<p>8. अधिक जानकारी के लिए https://aahar.jharkhand.gov.in देखें।</p>
-<p>9. टोल फ्री हेल्पलाइन: 1967, 1800 212 5512</p>
-</div>
+  </div>
 </div>
 
 <button onclick="window.print()">Print / Save PDF</button>
@@ -177,20 +159,22 @@ function add(){
 function generate(){
   let h="";
   members.forEach((m,i)=>{
-    h+=`<tr><td>${i+1}</td><td>${m.n}</td><td>${m.g}</td><td>${m.a}</td><td>${m.r}</td></tr>`;
+    h+=`<tr>
+      <td>${i+1}</td>
+      <td>${m.n}</td>
+      <td>${m.g}</td>
+      <td>${m.a}</td>
+      <td>${m.r}</td>
+    </tr>`;
   });
   tbl.innerHTML=h;
   total.innerText=members.length;
 
   orc.innerText=rc.value;
-  orc2.innerText=rc.value;
   oholder.innerText=holder.value;
-  oholder2.innerText=holder.value;
-  oholder3.innerText=holder.value;
   ofh.innerText=fh.value;
   oaddr.innerText=addr.value;
   odist.innerText=dist.value;
-  odist2.innerText=dist.value;
   odealer.innerText=dealer.value;
 }
 </script>
