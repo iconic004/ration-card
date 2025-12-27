@@ -5,28 +5,35 @@
 <title>Ration Card</title>
 
 <style>
-/* ===== PAGE SIZE EXACT A4 ===== */
+/* ===== EXACT A4 PAGE SETUP ===== */
 @page{
   size: A4;
-  margin: 15mm;
+  margin: 10mm;
 }
 
 body{
+  margin:0;
   font-family: Mangal, "Noto Serif Devanagari", Arial, sans-serif;
   color:#000;
 }
 
-.page{
-  width:210mm;
-  height:297mm;
-  page-break-after: always;
-  box-sizing:border-box;
+/* hide form while printing */
+@media print{
+  .form, button{
+    display:none !important;
+  }
 }
 
+/* each page */
+.page{
+  page-break-after: always;
+}
+
+/* border box like PDF */
 .border{
   border:2px solid #000;
-  padding:10mm;
-  height:100%;
+  padding:8mm;
+  box-sizing:border-box;
 }
 
 .center{text-align:center;}
@@ -45,8 +52,12 @@ th,td{
   text-align:center;
 }
 
-@media print{
-  .form, button{display:none;}
+/* fake barcode */
+.barcode{
+  font-family: monospace;
+  letter-spacing:3px;
+  font-size:18px;
+  margin-top:12px;
 }
 </style>
 </head>
@@ -54,14 +65,15 @@ th,td{
 <body>
 
 <!-- ================= FORM ================= -->
-<div class="form">
+<div class="form" style="padding:15px;">
 <h3>Ration Card Form</h3>
-Ration Card No <input id="rc"><br><br>
-Card Holder Name <input id="holder"><br><br>
-Father / Husband Name <input id="fh"><br><br>
-District <input id="dist"><br><br>
-Address <input id="addr"><br><br>
-Dealer Name <input id="dealer"><br><br>
+
+Ration Card No: <input id="rc"><br><br>
+Card Holder Name: <input id="holder"><br><br>
+Father / Husband Name: <input id="fh"><br><br>
+District: <input id="dist"><br><br>
+Address: <input id="addr"><br><br>
+Dealer Name: <input id="dealer"><br><br>
 
 <h4>Family Member</h4>
 Name <input id="mname">
@@ -69,106 +81,110 @@ Gender <input id="mgender" placeholder="पु० / म०">
 Age <input id="mage">
 Relation <input id="mrel">
 <button onclick="add()">Add</button>
+
 <br><br>
 <button onclick="generate()">Generate</button>
 </div>
 
-<!-- ================= PAGE 1 ================= -->
+<!-- ================= PAGE 1 (FAMILY LIST) ================= -->
 <div class="page">
-<div class="border">
+  <div class="border">
 
-<table>
-<tr>
-<th>क्र०</th><th>नाम</th><th>लिंग</th><th>उम्र</th><th>संबंध</th>
-</tr>
-<tbody id="tbl"></tbody>
-</table>
+    <table>
+      <tr>
+        <th>क्र०</th>
+        <th>नाम</th>
+        <th>लिंग</th>
+        <th>उम्र</th>
+        <th>संबंध</th>
+      </tr>
+      <tbody id="tbl"></tbody>
+    </table>
 
-<p><b>कुल व्यक्तियों की संख्या :</b> <span id="total"></span></p>
-<p><b>कार्डधारी हस्ताक्षर :</b></p>
+    <p><b>कुल व्यक्तियों की संख्या :</b> <span id="total"></span></p>
+    <p><b>कार्डधारी हस्ताक्षर :</b></p>
 
-<br>
+    <br>
+    <p class="center small">
+      Help Line No: 18003456598<br>
+      IT SUPPORT BY NATIONAL INFORMATIC CENTRE (NIC)
+    </p>
 
-<p class="center small">
-Help Line No: 18003456598<br>
-IT SUPPORT BY NATIONAL INFORMATIC CENTRE (NIC)
-</p>
-
+  </div>
 </div>
-</div>
 
-<!-- ================= PAGE 2 ================= -->
+<!-- ================= PAGE 2 (FRONT COVER) ================= -->
 <div class="page">
-<div class="border center">
+  <div class="border center">
 
-<img src="logo.png" style="width:130px;"><br><br>
+    <img src="logo.png" style="width:130px;"><br><br>
 
-<h2>राशन कार्ड</h2>
-<p class="bold">खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</p>
+    <h2>राशन कार्ड</h2>
+    <p>खाद्य, सार्वजनिक वितरण एवं उपभोक्ता मामले विभाग</p>
 
-<p><b>Ration Card No:</b> <span id="orc"></span></p>
-<p><b>कार्डधारी का नाम :</b> <span id="oholder"></span></p>
+    <p><b>Ration Card No :</b> <span id="orc"></span></p>
+    <p><b>कार्डधारी का नाम :</b> <span id="oholder"></span></p>
 
-<p>झारखण्ड राज्य खाद्य सुरक्षा योजना</p>
-<p><b>जिला –</b> <span id="odist"></span></p>
+    <p>झारखण्ड राज्य खाद्य सुरक्षा योजना</p>
+    <p><b>जिला :</b> <span id="odist"></span></p>
 
-<br>
-<div style="font-family:monospace;letter-spacing:3px;">
-|| ||| || ||| | ||| || ||| | |||
+    <div class="barcode">
+      || ||| || ||| | ||| || ||| | |||
+    </div>
+
+  </div>
 </div>
 
-</div>
-</div>
-
-<!-- ================= PAGE 3 ================= -->
+<!-- ================= PAGE 3 (DETAILS) ================= -->
 <div class="page">
-<div class="border">
+  <div class="border">
 
-<p><b>1. Card Holder Name :</b> <span id="oholder2"></span></p>
-<p><b>2. कार्डधारी का नाम :</b> <span id="oholder3"></span></p>
+    <p><b>1. Card Holder Name :</b> <span id="oholder2"></span></p>
+    <p><b>2. कार्डधारी का नाम :</b> <span id="oholder3"></span></p>
 
-<p class="xsmall">
-(गृहस्थी का मुखिया 18 वर्ष या उससे अधिक की महिला होगी…)
-</p>
+    <p class="xsmall">
+      (गृहस्थी का मुखिया 18 वर्ष या उससे अधिक की महिला होगी।)
+    </p>
 
-<p><b>3. पिता / पति का नाम :</b> <span id="ofh"></span></p>
+    <p><b>3. पिता / पति का नाम :</b> <span id="ofh"></span></p>
 
-<p><b>4. आवासीय पता :</b><br>
-<span id="oaddr"></span><br>
-<b>जिला :</b> <span id="odist2"></span>
-</p>
+    <p><b>4. आवासीय पता :</b><br>
+      <span id="oaddr"></span><br>
+      <b>जिला :</b> <span id="odist2"></span>
+    </p>
 
-<p><b>5. वितरक का नाम :</b> <span id="odealer"></span></p>
+    <p><b>5. वितरक का नाम :</b> <span id="odealer"></span></p>
 
-<br><br>
-<p class="right">प्राधिकृत अधिकारी का हस्ताक्षर / मुहर</p>
+    <br><br>
+    <p class="right">प्राधिकृत अधिकारी का हस्ताक्षर / मुहर</p>
 
+  </div>
 </div>
-</div>
 
-<!-- ================= PAGE 4 ================= -->
+<!-- ================= PAGE 4 (INSTRUCTIONS / BACK) ================= -->
 <div class="page">
-<div class="border xsmall">
+  <div class="border xsmall">
 
-<h4 class="center">कार्डधारियों के लिए आवश्यक सूचनाएँ</h4>
+    <h4 class="center">कार्डधारियों के लिए आवश्यक सूचनाएँ</h4>
 
-<p>1. यह राशन कार्ड निःशुल्क है।</p>
-<p>2. कार्ड को सुरक्षित रखना कार्डधारी की जिम्मेदारी है।</p>
-<p>3. माह का राशन अगले माह में भी प्राप्त किया जा सकता है।</p>
-<p>4. शिकायत संबंधित अधिकारी को दी जा सकती है।</p>
-<p>5. कार्ड खोने पर नया कार्ड नियमानुसार मिलेगा।</p>
-<p>6. निवास स्थान बदलने पर सूचना देना आवश्यक है।</p>
-<p>7. अन्य स्थान जाने पर कार्ड जमा करना होगा।</p>
-<p>8. अधिक जानकारी: https://aahar.jharkhand.gov.in</p>
-<p>9. हेल्पलाइन: 1967, 1800 212 5512</p>
+    <p>1. यह राशन कार्ड निःशुल्क है।</p>
+    <p>2. कार्ड को सुरक्षित रखना कार्डधारी की जिम्मेदारी है।</p>
+    <p>3. माह का राशन अगले माह में भी प्राप्त किया जा सकता है।</p>
+    <p>4. शिकायत संबंधित अधिकारी को दी जा सकती है।</p>
+    <p>5. कार्ड खोने पर नया कार्ड नियमानुसार मिलेगा।</p>
+    <p>6. निवास स्थान बदलने पर सूचना देना आवश्यक है।</p>
+    <p>7. अन्य स्थान जाने पर कार्ड जमा करना होगा।</p>
+    <p>8. अधिक जानकारी: https://aahar.jharkhand.gov.in</p>
+    <p>9. हेल्पलाइन: 1967, 1800 212 5512</p>
 
-</div>
+  </div>
 </div>
 
 <button onclick="window.print()">Print / Save PDF</button>
 
 <script>
 let members=[];
+
 function add(){
   members.push({
     n:mname.value,
@@ -176,14 +192,19 @@ function add(){
     a:mage.value,
     r:mrel.value
   });
+  mname.value=mgender.value=mage.value=mrel.value="";
 }
 
 function generate(){
   let h="";
   members.forEach((m,i)=>{
     h+=`<tr>
-    <td>${i+1}</td><td>${m.n}</td><td>${m.g}</td>
-    <td>${m.a}</td><td>${m.r}</td></tr>`;
+      <td>${i+1}</td>
+      <td>${m.n}</td>
+      <td>${m.g}</td>
+      <td>${m.a}</td>
+      <td>${m.r}</td>
+    </tr>`;
   });
   tbl.innerHTML=h;
   total.innerText=members.length;
